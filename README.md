@@ -25,15 +25,15 @@ Divided into 2 microservices, communication takes place over the http protocol.
 # You need to download the code from the repository.
 
 # Start the server:
-node server/index.js
+node web-api/index.js
 
 # Display exchange rates in relation to BYN:
-node client/index.js
+node accepts-command/index.js
 
 # Displays the rate in relation to the currency specified in the parameters (in relation to USD):
-node client/index.js --base="USD"
+node accepts-command/index.js --base="USD"
 
 # Currency conversion. Returns a string indicating the translation and course:
-node client/index.js --calc="100 USD" --to="EUR"
+node accepts-command/index.js --calc="100 USD" --to="EUR"
 
 ```
