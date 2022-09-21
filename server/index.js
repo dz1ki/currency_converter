@@ -2,6 +2,11 @@ import http from "http";
 import { exchangeRates } from "./exchangeRates.js";
 import { PORT } from "./constants.js";
 
+/**
+ * The function creates an open connection and can accept requests and respond
+ * @constructor
+ */
+
 http
   .createServer((request, response) => {
     let data = "";

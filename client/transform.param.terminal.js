@@ -1,5 +1,11 @@
 import { TARGET_PARAMS } from "./constants.js";
 
+/**
+ * Function validates commands.
+ * @constructor
+ * @returns {Array} - Returns commands with their values.
+ */
+
 const validCommand = () => {
   let receivedParams = [];
   const targetParams = TARGET_PARAMS;
@@ -18,18 +24,20 @@ const validCommand = () => {
   return receivedParams;
 };
 
+/**
+ * The function takes validated values and converts.
+ * @constructor
+ * @param {Array} params - validated values.
+ * @returns {Array} - Returns new array of objects.
+ */
+
 const parseParams = (params) => {
   const parsedParams = [];
   for (const param of params) {
     const removeDashes = param.toString().replace(/[--]/gi, "");
     const rawParamArray = removeDashes.split("=");
     let rawParam;
-    if (rawParamArray.length == 1) {
-      rawParam = { param: rawParamArray[0], value: null };
-    }
-    if (rawParamArray.length == 2) {
-      rawParam = { param: rawParamArray[0], value: rawParamArray[1] };
-    }
+    rawParam = { param: rawParamArray[0], value: rawParamArray[1] };
     parsedParams.push(rawParam);
   }
   return parsedParams;

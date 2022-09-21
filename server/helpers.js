@@ -1,10 +1,5 @@
 import https from "https";
-import {
-  CASH_FILE_PATH,
-  EXCHANGE_URL,
-  TARGET_PARAMS,
-  BASE_CURRENCY,
-} from "./constants.js";
+import { CASH_FILE_PATH, EXCHANGE_URL, BASE_CURRENCY } from "./constants.js";
 import fs from "fs";
 
 /**
@@ -15,7 +10,6 @@ import fs from "fs";
 
 export const fileWriter = (data) => {
   fs.writeFileSync(CASH_FILE_PATH, Buffer.from(JSON.stringify(data)), (err) => {
-    console.log("Exchange rate updated");
     if (err) {
       console.log("Error in writing cash file");
     } else {
@@ -99,6 +93,7 @@ export const exchangeObjectMapper = (exchangesObject) => {
 
 export let httpRequest = async () => {
   return new Promise(async (resolve, reject) => {
+    console.log("Exchange rate update...");
     let data = "";
     let request = https.request(EXCHANGE_URL, (response) => {
       response.on("data", (chunk) => {
@@ -108,6 +103,7 @@ export let httpRequest = async () => {
       response.on("end", () => {
         let result = JSON.parse(data);
         resolve(result);
+        console.log("Updated..");
       });
     });
     request.on("error", (error) => {
@@ -168,7 +164,7 @@ const mappedAddKeyBase = (mappedDelkeyObject) => {
 
 const ceckСurrency = (costСurrency) => {
   if (!costСurrency) {
-    throw { message: `Invalid currency value ` };
+    throw `Unknown currency`;
   }
 };
 
@@ -229,7 +225,7 @@ const relationToOtherCurrencies = (transformObject, costСurrency) => {
 
 const baseValueCheck = (params) => {
   if (params[0].value === BASE_CURRENCY) {
-    throw { message: `Invalid value ${params[0].value}` };
+    throw `Parameter 'base' cannot be with a value ${params[0].value}`;
   }
 };
 
@@ -309,22 +305,18 @@ const transformToString = (object) => {
  */
 
 export const validateReceivedParams = (params, mappedDelkeyObject) => {
-  const targetParams = TARGET_PARAMS;
   if (!params[0]) {
     return transformToString(mappedDelkeyObject);
   }
-  if (params[0].param === targetParams[0]) {
+  if (params[0].param === "base") {
     const result = relationToAnotherCurrency(params, mappedDelkeyObject);
     return transformToString(result);
   }
-  try {
-    if (
-      params[0].param === targetParams[1] &&
-      params[1].param === targetParams[2]
-    ) {
-      return currencyConverter(params, mappedDelkeyObject);
-    }
-  } catch (e) {
-    return "Parameter 'calc' cannot be used without parameter 'to'";
+  if (!(params[0] && params[1])) {
+    return "There should be two parameters 'calc' and 'to' ";
   }
+  if (params[0].param === "calc" && params[1].param === "to") {
+    return currencyConverter(params, mappedDelkeyObject);
+  }
+  return "Invalid parameters ";
 };
