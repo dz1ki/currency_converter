@@ -1,5 +1,5 @@
 import http from "http";
-import { exchangeRates } from "./exchangeRates.js";
+import { converter } from "./converter.js";
 import { PORT } from "./constants.js";
 
 /**
@@ -15,7 +15,7 @@ http
     });
     request.on("end", async () => {
       try {
-        const result = await exchangeRates(JSON.parse(data));
+        const result = await converter(JSON.parse(data));
         response.end(result);
       } catch (error) {
         const errorString = JSON.stringify(error);
