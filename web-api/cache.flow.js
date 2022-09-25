@@ -1,7 +1,7 @@
 import https from "https";
 import { CASH_FILE_PATH, EXCHANGE_URL } from "./constants.js";
 import fs from "fs";
-import { mappedGetOneFilial } from "./mappers.js";
+import { mappedGetOneFilial, exchangeObjectMapper } from "./mappers.js";
 
 /**
  * The function saves the file in the format .json.
@@ -55,25 +55,6 @@ export const getCashedExchange = () => {
   } catch (e) {
     return false;
   }
-};
-
-/**
- * The function creates a new object by adding date fields.
- * @constructor
- * @param {Object} exchangesObject
- * @returns {Object}  returns an object.
- */
-
-export const exchangeObjectMapper = (exchangesObject) => {
-  const responseObject = {
-    USD: parseFloat(exchangesObject.USD_out),
-    EUR: parseFloat(exchangesObject.EUR_out),
-    RUB: parseFloat(exchangesObject.RUB_out) / 100,
-    PLN: parseFloat(exchangesObject.PLN_out) / 10,
-    GBP: parseFloat(exchangesObject.GBP_out),
-    DATE: String(new Date()),
-  };
-  return responseObject;
 };
 
 /**

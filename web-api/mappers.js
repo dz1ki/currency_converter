@@ -59,3 +59,21 @@ export const mappedAddKeyBase = (mappedDelkeyObject) => {
 export const mappedTransformToString = (object) => {
   return JSON.stringify(object).replace(/["",{}]/g, " ");
 };
+/**
+ * The function creates a new object by adding date fields.
+ * @constructor
+ * @param {Object} exchangesObject
+ * @returns {Object}  returns an object.
+ */
+
+export const exchangeObjectMapper = (exchangesObject) => {
+  const responseObject = {
+    USD: parseFloat(exchangesObject.USD_out),
+    EUR: parseFloat(exchangesObject.EUR_out),
+    RUB: parseFloat(exchangesObject.RUB_out) / 100,
+    PLN: parseFloat(exchangesObject.PLN_out) / 10,
+    GBP: parseFloat(exchangesObject.GBP_out),
+    DATE: String(new Date()),
+  };
+  return responseObject;
+};
